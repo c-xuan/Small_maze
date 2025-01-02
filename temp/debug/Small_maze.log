@@ -1,5 +1,7 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(516,5): warning MSB8004: Intermediate 目錄結尾不是結尾斜線。這個建置執行個體將會加入此斜線，因為這樣才能正確評估 Intermediate 目錄。
 C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8004: Output 目錄結尾不是結尾斜線。這個建置執行個體將會加入此斜線，因為這樣才能正確評估 Output 目錄。
   Main.c
-C:\Users\user\Downloads\程式設計\期末作業\source\Main.c(53,9): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  Small_maze.vcxproj -> C:\Users\user\Downloads\程式設計\期末作業\temp\debug\Small_maze.exe
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(26,19): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(71,9): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  LINK : 最後的累加連結找不到或未建置 ..\..\temp\debug\Small_maze.exe，正在執行完整連結
+  Small_maze.vcxproj -> C:\Users\user\Downloads\程式設計\期末作業\Small_maze\temp\debug\Small_maze.exe

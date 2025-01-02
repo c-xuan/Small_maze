@@ -1,79 +1,138 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+#include <time.h> // 引入時間相關庫
 
-// 定義迷宮的大小
-#define ROWS 5
-#define COLS 5
+// 遊戲執行函式
+void move(char map[40][40], int rows, int cols, int x, int y, int p, int q) {
 
-// 定義迷宮結構
-int maze[ROWS][COLS] = {
-    {1, 0, 1, 1, 1},
-    {1, 0, 1, 0, 1},
-    {1, 1, 1, 0, 1},
-    {0, 0, 1, 1, 1},
-    {1, 1, 1, 0, 1}
-};
+    int steps = 0; // 步數統計
 
-// 定義玩家初始位置
-int playerX = 0, playerY = 0;
+    // 記錄開始時間
+    time_t start_time = time(NULL); // 獲取當前時間
 
-// 定義終點位置
-int goalX = 4, goalY = 4;
+    while (x != p || y != q) {
+        system("cls"); // 清除畫面
 
-// 顯示迷宮
-void printMaze(int playerX, int playerY) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            if (i == playerX && j == playerY)
-                printf("P "); // 玩家位置
-            else if (i == goalX && j == goalY)
-                printf("G "); // 終點位置
-            else if (maze[i][j] == 0)
-                printf("█ "); // 障礙物
-            else
-                printf(". "); // 可通行路徑
+        // 列印地圖
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                putchar(map[i][j]); // 逐字輸出
+            }
+            printf("\n"); // 換行
         }
-        printf("\n");
-    }
-}
 
-// 判斷是否可以移動
-int isValidMove(int x, int y) {
-    return x >= 0 && x < ROWS && y >= 0 && y < COLS && maze[x][y] == 1;
+        char ch = getch(); // 獲取玩家輸入
+        if ((ch == 's' || ch == 'S') && map[x + 1][y] != '#') { // 下
+            map[x][y] = ' ';
+            x++;
+            steps++; // 計步
+            map[x][y] = 'O';
+        }
+        if ((ch == 'w' || ch == 'W') && map[x - 1][y] != '#') { // 上
+            map[x][y] = ' ';
+            x--;
+            steps++; // 計步
+            map[x][y] = 'O';
+        }
+        if ((ch == 'a' || ch == 'A') && map[x][y - 1] != '#') { // 左
+            map[x][y] = ' ';
+            y--;
+            steps++; // 計步
+            map[x][y] = 'O';
+        }
+        if ((ch == 'd' || ch == 'D') && map[x][y + 1] != '#') { // 右
+            map[x][y] = ' ';
+            y++;
+            steps++; // 計步
+            map[x][y] = 'O';
+        }
+    }
+
+    // 記錄結束時間
+    time_t end_time = time(NULL); // 獲取當前時間
+    // 計算玩家完成所需時間
+    double time_diff = difftime(end_time, start_time);
+
+    // 遊戲完成訊息
+    system("cls");
+    printf("完成遊戲！總共移動了 %d 步。\n", steps);
+    printf("你花了 %.2f 秒完成遊戲。\n", time_diff);
+    system("pause");
 }
 
 int main() {
-    printf("歡迎來到迷宮遊戲！使用 W/A/S/D 移動玩家到達終點 (G)。\n");
 
-    while (1) {
-        printMaze(playerX, playerY);
+    int chg;
+    do {
+        system("cls");
+        printf("1. 簡單\n2. 中等\n3. 困難\n4. 結束\n請選擇地圖：");
+        scanf("%d", &chg);
 
-        // 玩家輸入
-        printf("請輸入移動指令 (W=上, A=左, S=下, D=右): ");
-        char move;
-        scanf(" %c", &move);
-
-        // 計算新位置
-        int newX = playerX, newY = playerY;
-        if (move == 'W' || move == 'w') newX--;
-        else if (move == 'S' || move == 's') newX++;
-        else if (move == 'A' || move == 'a') newY--;
-        else if (move == 'D' || move == 'd') newY++;
-
-        // 檢查移動是否合法
-        if (isValidMove(newX, newY)) {
-            playerX = newX;
-            playerY = newY;
-        }
-        else {
-            printf("無法移動到該位置！請重新輸入。\n");
-        }
-
-        // 檢查是否到達終點
-        if (playerX == goalX && playerY == goalY) {
-            printf("恭喜你到達終點！遊戲結束！\n");
+        // 遊戲選擇
+        switch (chg) {
+        case 1: {
+            char map[40][40] = {
+                "##########",
+                "#O    #  #",
+                "#  #     #",
+                "#  #  ## #",
+                "#    ##X #",
+                "##########"
+            };
+            int rows = 6, cols = 10, startX = 1, startY = 1, goalX = 4, goalY = 7;
+            move(map, rows, cols, startX, startY, goalX, goalY);
             break;
         }
-    }
+        case 2: {
+            char map[40][40] = {
+                "####################",
+                "#O       #         #",
+                "########  #  ### ###",
+                "#             ##   #",
+                "### ####  ##  ##   #",
+                "#     ##  #        #",
+                "# ### ##  # ########",
+                "# ##        #      #",
+                "# X  ####   ####  ##",
+                "####################"
+            };
+            int rows = 10, cols = 20, startX = 1, startY = 1, goalX = 8, goalY = 2;
+            move(map, rows, cols, startX, startY, goalX, goalY);
+            break;
+        }
+        case 3: {
+            char map[40][40] = {
+                "##############################",
+                "#O   #       ##       ##     #",
+                "###  ######  ##  #######  ####",
+                "#    #    #      ##         ##",
+                "####    ###  ##  ##  #########",
+                "#    ##  ##  ##      ##      #",
+                "###  ##      ###########  ####",
+                "#    ##  ##          ##      #",
+                "######  ##  ########  ##  ####",
+                "#        ##  ##       ##     #",
+                "###  ######  ##  ### #########",
+                "#    #       ##  ##          #",
+                "#  #####  ##     ##  # #######",
+                "#      #  ##  ########     X #",
+                "##############################"
+            };
+            int rows = 15, cols = 30, startX = 1, startY = 1, goalX = 13, goalY = 27;
+            move(map, rows, cols, startX, startY, goalX, goalY);
+            break;
+        }
+        case 4:
+            system("cls");
+            printf("結束遊戲！\n");
+            break;
+        default:
+            printf("無效選項，請重新選擇！\n");
+            break;
+        }
+    } while (chg != 4);
 
     return 0;
 }
