@@ -1,78 +1,90 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
 
-// 定義迷宮的大小
-#define ROWS 5
-#define COLS 5
+#define MAX_ROWS 50
+#define MAX_COLS 50
 
-// 定義迷宮結構
-int maze[ROWS][COLS] = {
-    {1, 0, 1, 1, 1},
-    {1, 0, 1, 0, 1},
-    {1, 1, 1, 0, 1},
-    {0, 0, 1, 1, 1},
-    {1, 1, 1, 0, 1}
-};
+int dx[] = { -2, 2, 0, 0 };
+int dy[] = { 0, 0, -2, 2 };
 
-// 定義玩家初始位置
-int playerX = 0, playerY = 0;
-
-// 定義終點位置
-int goalX = 4, goalY = 4;
-
-// 顯示迷宮
-void printMaze(int playerX, int playerY) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            if (i == playerX && j == playerY)
-                printf("P "); // 玩家位置
-            else if (i == goalX && j == goalY)
-                printf("G "); // 終點位置
-            else if (maze[i][j] == 0)
-                printf("█ "); // 障礙物
-            else
-                printf(". "); // 可通行路徑
-        }
-        printf("\n");
+// Function to shuffle directions
+void shuffle_directions(int directions[4]) {
+    for (int i = 0; i < 4; i++) {
+        int r = rand() % 4;
+        int temp = directions[i];
+        directions[i] = directions[r];
+        directions[r] = temp;
     }
 }
 
-// 判斷是否可以移動
-int isValidMove(int x, int y) {
-    return x >= 0 && x < ROWS && y >= 0 && y < COLS && maze[x][y] == 1;
+// Function to set cursor position
+void set_cursor_position(int x, int y) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord = { (SHORT)x, (SHORT)y };
+    SetConsoleCursorPosition(hConsole, coord);
+}
+
+// Recursive DFS to generate the maze
+void dfs_generate(char map[MAX_ROWS][MAX_COLS], int x, int y, int rows, int cols) {
+    int directions[4] = { 0, 1, 2, 3 };
+    shuffle_directions(directions);
+
+    for (int i = 0; i < 4; i++) {
+        int nx = x + dx[directions[i]];
+        int ny = y + dy[directions[i]];
+        int wall_x = x + dx[directions[i]] / 2;
+        int wall_y = y + dy[directions[i]] / 2;
+
+        if (nx > 0 && nx < rows - 1 && ny > 0 && ny < cols - 1 && map[nx][ny] == '#') {
+            map[wall_x][wall_y] = ' ';
+            map[nx][ny] = ' ';
+            // set_cursor_position(0, 0);
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    putchar(map[i][j]);
+                }
+                printf("\n");
+            }
+            Sleep(50); // Control animation speed
+            dfs_generate(map, nx, ny, rows, cols);
+        }
+    }
+}
+
+// Function to initialize and generate the maze
+void generate_maze(char map[MAX_ROWS][MAX_COLS], int rows, int cols, int* startX, int* startY, int* goalX, int* goalY) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            map[i][j] = '#';
+        }
+    }
+
+    *startX = 1; *startY = 1;
+    *goalX = rows - 2; *goalY = cols - 2;
+    map[*startX][*startY] = 'O';
+    map[*goalX][*goalY] = 'X';
+
+    map[*startX][*startY] = ' ';
+    dfs_generate(map, *startX, *startY, rows, cols);
 }
 
 int main() {
-    printf("歡迎來到迷宮遊戲！使用 W/A/S/D 移動玩家到達終點 (G)。\n");
+    srand(time(NULL));
 
-    while (1) {
-        printMaze(playerX, playerY);
+    char map[MAX_ROWS][MAX_COLS];
+    int rows = 25, cols = 50;
+    int startX, startY, goalX, goalY;
 
-        // 玩家輸入
-        printf("請輸入移動指令 (W=上, A=左, S=下, D=右): ");
-        char move;
-        scanf(" %c", &move);
+    generate_maze(map, rows, cols, &startX, &startY, &goalX, &goalY);
 
-        // 計算新位置
-        int newX = playerX, newY = playerY;
-        if (move == 'W' || move == 'w') newX--;
-        else if (move == 'S' || move == 's') newX++;
-        else if (move == 'A' || move == 'a') newY--;
-        else if (move == 'D' || move == 'd') newY++;
-
-        // 檢查移動是否合法
-        if (isValidMove(newX, newY)) {
-            playerX = newX;
-            playerY = newY;
+    //set_cursor_position(0, rows + 1);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            putchar(map[i][j]);
         }
-        else {
-            printf("無法移動到該位置！請重新輸入。\n");
-        }
-
-        // 檢查是否到達終點
-        if (playerX == goalX && playerY == goalY) {
-            printf("恭喜你到達終點！遊戲結束！\n");
-            break;
-        }
+        printf("\n");
     }
 
     return 0;
