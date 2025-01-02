@@ -1,5 +1,9 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(516,5): warning MSB8004: Intermediate 目錄結尾不是結尾斜線。這個建置執行個體將會加入此斜線，因為這樣才能正確評估 Intermediate 目錄。
 C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8004: Output 目錄結尾不是結尾斜線。這個建置執行個體將會加入此斜線，因為這樣才能正確評估 Output 目錄。
   Main.c
-C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(53,9): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(104,19): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(190,11): warning C4244: '函式': 將 'time_t' 轉換為 'unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(196,15): warning C4477: 'scanf' : 格式字串 '%d' 需要 'int *' 類型的引數，但 variadic 引數 1 的類型為 'char *'
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(196,15): message : 請考慮在格式字串中使用 '%hhd'
+C:\Users\user\Downloads\程式設計\期末作業\Small_maze\source\Main.c(196,9): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   Small_maze.vcxproj -> C:\Users\user\Downloads\程式設計\期末作業\Small_maze\temp\debug\Small_maze.exe
